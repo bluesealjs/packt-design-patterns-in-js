@@ -1,4 +1,9 @@
 (function(win, $) {
+  function clone(src, out) {
+    for (var attr in src.prototype) {
+      out.prototype[attr] = src.prototype[attr];
+    }
+  }
   function Circle() {
     this.item = $('<div class="circle"></div>');
   }
@@ -16,6 +21,11 @@
     return this.item;
   };
 
+  function Rect() {
+    this.item = $('<div class="rect"></div>');
+  }
+  clone(Circle, Rect);
+
   function RedCircleBuilder() {
     this.item = new Circle();
     this.init();
@@ -32,6 +42,10 @@
   }
   BlueCircleBuilder.prototype.init = function() {
     this.item.color("blue");
+    var rect = new Rect();
+    rect.color("yellow");
+    rect.move(40, 40);
+    this.item.get().append(rect.get());
   };
 
   BlueCircleBuilder.prototype.get = function() {
